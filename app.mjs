@@ -1,4 +1,4 @@
-import { STORAGE_KEY, TRANSPORTS, initialState, restoreState, summarize, validate, buildPrompt } from './core.mjs';
+import { STORAGE_KEY, TRANSPORTS, REGIONS, INTERESTS, initialState, restoreState, summarize, validate, buildPrompt } from './core.mjs';
 const $ = s => document.querySelector(s);
 let state = initialState();
 let generated = '';
@@ -66,10 +66,27 @@ for (const t of TRANSPORTS) {
   const text = document.createElement('span'); text.textContent = t; label.append(checkbox, symbol, text); $('#transport-list').append(label);
   checkbox.addEventListener('change', () => { state.transports = [...$('#transport-list').querySelectorAll('input:checked')].map(input => input.value); changed(); });
 }
-for (const input of $('#trip-form').querySelectorAll('[name]')) {
-  input.value = state.trip[input.name];
-  input.addEventListener('input', () => { state.trip[input.name] = input.name === 'days' ? (input.value === '' ? NaN : Number(input.value)) : input.value; changed(); });
+for (const region of REGIONS) { const option = document.createElement('option'); option.value = region; option.textContent = region; $('#region-select').append(option); }
+for (const interest of INTERESTS) {
+  const label = document.createElement('label'); label.className = 'interest-chip';
+  const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.value = interest; checkbox.checked = state.interests.includes(interest); checkbox.setAttribute('aria-label', interest);
+  const text = document.createElement('span'); text.textContent = interest; label.append(checkbox, text); $('#interest-list').append(label);
+  checkbox.addEventListener('change', () => { state.interests = [...$('#interest-list').querySelectorAll('input:checked')].map(input => input.value); changed(); });
 }
+function renderDestinationFields() {
+  const decided = state.trip.destinationMode === 'decided';
+  $('#known-destination').hidden = !decided; $('#exploring-fields').hidden = decided;
+}
+for (const input of $('#trip-form').querySelectorAll('[name]')) {
+  if (input.type === 'radio') {
+    input.checked = state.trip[input.name] === input.value;
+    input.addEventListener('change', () => { if (!input.checked) return; state.trip[input.name] = input.value; renderDestinationFields(); changed(); });
+    continue;
+  }
+  input.value = state.trip[input.name];
+  input.addEventListener('input', () => { state.trip[input.name] = ['days', 'rooms'].includes(input.name) ? (input.value === '' ? NaN : Number(input.value)) : input.value; changed(); });
+}
+renderDestinationFields();
 $('#trip-form').addEventListener('submit', event => {
   event.preventDefault(); const errors = validate(state);
   if (errors.length) { $('#errors').textContent = errors.join('\n'); $('#errors').hidden = false; $('#errors').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }

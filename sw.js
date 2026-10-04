@@ -1,4 +1,4 @@
-const CACHE = 'tabi-jitaku-assets-v3';
+const CACHE = 'tabi-jitaku-assets-v4';
 const ASSETS = ['./', './index.html', './styles.css', './app.mjs', './core.mjs', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png', './assets/coastal-journey.webp'];
 const allowed = new Set(ASSETS.map(path => new URL(path, self.registration.scope).href));
 self.addEventListener('install', event => {
