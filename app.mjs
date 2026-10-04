@@ -58,10 +58,12 @@ $('#member-form').addEventListener('submit', event => {
   else { if (state.members.length >= 50) { toast('登録できるのは50人までです。'); return; } state.members.push({ id: crypto.randomUUID(), label, age, selected: true }); }
   resetMemberForm(); renderMembers(); changed(); $('#member-label').focus();
 });
+const transportSymbols = { '自家用車':'🚙', 'レンタカー':'🚗', '飛行機':'✈', '電車・新幹線':'🚆', 'バス':'🚌', '船':'⛴' };
 for (const t of TRANSPORTS) {
   const label = document.createElement('label'); label.className = 'transport-chip';
-  const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.value = t; checkbox.checked = state.transports.includes(t);
-  const text = document.createElement('span'); text.textContent = t; label.append(checkbox, text); $('#transport-list').append(label);
+  const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.value = t; checkbox.checked = state.transports.includes(t); checkbox.setAttribute('aria-label', t);
+  const symbol = document.createElement('span'); symbol.className = 'transport-symbol'; symbol.textContent = transportSymbols[t]; symbol.setAttribute('aria-hidden', 'true');
+  const text = document.createElement('span'); text.textContent = t; label.append(checkbox, symbol, text); $('#transport-list').append(label);
   checkbox.addEventListener('change', () => { state.transports = [...$('#transport-list').querySelectorAll('input:checked')].map(input => input.value); changed(); });
 }
 for (const input of $('#trip-form').querySelectorAll('[name]')) {
