@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#2c6654">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="旅じたく">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; script-src 'self'; worker-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>旅じたく｜家族の旅行プランを、ひとつのプロンプトに</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='18' fill='%23265e52'/%3E%3Ctext x='10' y='43' font-size='38' fill='white'%3E旅%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <header class="site-header"><div class="brand"><span class="brand-mark">旅</span><span>旅じたく<small>家族でつくる、次の楽しみ。</small></span></div><span class="local-badge"><span class="status-dot"></span>端末内に保存</span></header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">次の旅は、どこへ行こう。</p><h1>家族の「行きたい」を、<br>旅のしおりにつなげよう。</h1><p class="hero-copy">メンバーと旅の希望を選ぶだけ。<br>個人情報を伏せた、AIへの依頼文ができあがります。</p><div class="hero-tags"><span>登録はこのブラウザ内</span><span>移動手段は組み合わせ自由</span></div></div>
+      <div class="journey-art" aria-hidden="true"><svg viewBox="0 0 390 210"><path d="M10 166Q70 80 130 150T250 133T385 155V210H10Z" fill="#dce8d4"/><path d="M65 160Q89 196 154 155T260 109T330 58" fill="none" stroke="#cc9b5b" stroke-width="3" stroke-dasharray="7 7"/><circle cx="325" cy="54" r="24" fill="#edc57a"/><path d="M183 146L245 43L310 146Z" fill="#9bbca8"/><path d="M222 82L245 43L268 82L246 72Z" fill="#fbfaf3"/><path d="M35 145V108L63 84L91 108V145Z" fill="#f8f5e9"/><path d="M31 110L63 82L96 110" fill="none" stroke="#426e5e" stroke-width="5"/><path d="M55 145V122H70V145" fill="#c49b66"/><path d="M115 151V115M101 125L115 93L129 125Z" fill="#426e5e" stroke="#426e5e" stroke-width="4"/><rect x="286" y="145" width="63" height="32" rx="9" fill="#426e5e"/><rect x="297" y="136" width="38" height="22" rx="8" fill="#426e5e"/><rect x="301" y="140" width="28" height="12" rx="4" fill="#e7eee1"/><circle cx="300" cy="178" r="7" fill="#2d433a"/><circle cx="336" cy="178" r="7" fill="#2d433a"/><path d="M342 85l18-7-6 13-8-3-8 5 4-8" fill="#426e5e"/></svg><span class="art-caption">目的地までの時間も、思い出に。</span></div>
+    </section>
+    <section class="install-card" aria-label="スマホでの使い方"><div><strong>スマホだけで、旅の準備。</strong><p id="offline-status" role="status">オフラインで使う準備をしています。</p></div><button id="install-app" class="button secondary" type="button" hidden>ホーム画面に追加</button><details class="install-guide"><summary>スマホへの追加方法</summary><p>iPhone：Safariで開き、共有メニューから「ホーム画面に追加」。<br>Android：Chromeのメニューから「アプリをインストール」または「ホーム画面に追加」。<br>「オフラインでも使えます」の表示を確認してから、ホーム画面のアイコンで開いてください。AIにしおりを作ってもらうときは通信が必要です。</p></details></section>
+    <div class="workspace">
+      <div class="form-column">
+        <section class="card" id="family-section"><div class="section-heading"><span class="step">01</span><div><h2>一緒に行く人</h2><p>家族を登録して、今回の参加者にチェック。</p></div></div>
+          <form id="member-form" class="member-form"><label>呼び名<span class="optional">本名でなくてもOK</span><input id="member-label" maxlength="60" placeholder="例：大人A、子どもA" autocomplete="off" enterkeyhint="next" required></label><label class="age-input">年齢<input id="member-age" type="number" inputmode="numeric" min="0" max="120" step="1" placeholder="歳" enterkeyhint="done" required></label><button type="submit" class="button secondary add-button">＋ 登録</button></form>
+          <p class="field-hint">呼び名と年齢は端末内で保存。AI向けには人数と年齢層だけを使います。</p>
+          <div id="member-list" class="member-list"></div><div id="family-summary" class="family-summary" aria-live="polite"></div>
+        </section>
+        <form id="trip-form" novalidate>
+          <section class="card"><div class="section-heading"><span class="step">02</span><div><h2>旅の日程と行き先</h2><p>まだ決まっていない項目は、空欄のままで大丈夫。</p></div></div>
+            <div class="form-grid"><label>旅行日数 <span class="required">必須</span><div class="input-unit"><input name="days" type="number" min="1" max="30" step="1" required><span>日間</span></div></label><label>出発日 <span class="optional">任意</span><input name="date" type="date"></label><label class="span-two">出発エリア<input name="origin" maxlength="300" placeholder="例：大阪市周辺、羽田空港（自宅住所は不要）" autocomplete="off"></label><label class="span-two">行きたい場所 <span class="required">必須</span><textarea name="destinations" rows="3" maxlength="5000" placeholder="例：美ら海水族館&#10;古宇利島&#10;国際通り（1行に1か所）" required></textarea></label><label class="span-two">旅のペース<select name="pace"><option>ゆったり</option><option>ほどよく観光</option><option>たくさん巡りたい</option></select></label></div>
+          </section>
+          <section class="card"><div class="section-heading"><span class="step">03</span><div><h2>移動と泊まるところ</h2><p>飛行機＋レンタカーなど、複数選べます。</p></div></div>
+            <fieldset><legend>使いたい移動手段 <span class="required">必須</span></legend><div id="transport-list" class="transport-list"></div></fieldset>
+            <div class="form-grid"><label class="span-two">移動の組み合わせ<input name="transportNotes" maxlength="1000" placeholder="例：飛行機で沖縄へ。現地はレンタカーを利用"></label><label>宿の種類<select name="stay"><option>未定・提案してほしい</option><option>ホテル</option><option>旅館</option><option>リゾートホテル</option><option>貸別荘・コテージ</option><option>キャンプ・グランピング</option><option>宿泊なし（日帰りなど）</option></select></label><label>旅行全体の総予算 <span class="optional">全員分・任意</span><div class="input-unit"><input name="budget" type="number" min="1" max="100000000" step="1" placeholder="例：200000"><span>円</span></div></label><label class="span-two">宿に求めること<textarea name="stayNotes" rows="2" maxlength="2000" placeholder="例：家族全員で同じ部屋、朝食付き、温泉、子ども向け設備"></textarea></label></div>
+          </section>
+          <section class="card"><div class="section-heading"><span class="step">04</span><div><h2>大切にしたいこと</h2><p>食事、休憩、雨の日の過ごし方など。</p></div></div><label>その他の希望<textarea name="notes" rows="3" maxlength="5000" placeholder="例：長時間の移動を避けたい。昼寝の時間を確保。雨の日の代替案もほしい"></textarea></label><p class="field-hint">自由記入欄には本名・住所・連絡先・予約番号を書かず、旅行に必要な希望だけを入力してください。</p></section>
+          <button type="submit" class="button primary generate-button">AIへの依頼文をつくる <span aria-hidden="true">↗</span></button>
+        </form>
+      </div>
+      <aside class="output-column" id="prompt-section"><section class="card output-card"><div class="output-heading"><span class="document-icon" aria-hidden="true">▤</span><div><h2>旅の準備メモ</h2><p>ここから、しおりづくりへ。</p></div></div><div class="trip-stats"><div><strong id="stat-people">0</strong><span>人で行く</span></div><div><strong id="stat-days">3</strong><span>日間の旅</span></div><div><strong id="stat-modes">0</strong><span>つの移動手段</span></div></div>
+          <div class="privacy-note"><strong>個人情報を伏せて整えます</strong><p>登録した呼び名・正確な年齢は依頼文に含めません。このアプリからAIへの自動送信はありません。</p></div>
+          <div id="empty-output" class="empty-output"><span aria-hidden="true">✎</span><h3>旅の希望が、ひとつの文章に。</h3><p>旅の希望を入力したら<br>「AIへの依頼文をつくる」を押してください。</p></div>
+          <div id="output-content" hidden><label for="prompt-output" class="preview-label">AIへ渡す内容を確認</label><p class="field-hint">自由記入欄の個人情報をすべて自動判定することはできません。コピー前に、この文章を確認してください。</p><textarea id="prompt-output" readonly rows="16" spellcheck="false"></textarea><div class="output-actions"><button id="copy-prompt" class="button primary" type="button">依頼文をコピー</button></div><p class="field-hint">コピーした依頼文を、お使いのAIチャットへ貼り付けてください。</p></div>
+          <div id="errors" role="alert" hidden></div>
+        </section><p id="save-status" class="save-status" role="status">入力内容はこのブラウザに自動保存されます。</p><p class="storage-note">同じ端末・同じアプリで続きから使えます。端末の保存データを消すと、登録内容も消えます。PCとスマホの登録情報はそれぞれ別に保存されます。</p></aside>
+    </div>
+  </main><footer>旅じたく <span>計画する時間も、旅の楽しみ。</span></footer><nav class="mobile-nav" aria-label="入力項目への移動"><a href="#family-section">参加者</a><a href="#trip-form">旅の条件</a><a href="#prompt-section">依頼文</a></nav><div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "旅じたく｜家族の旅行プラン",
+  "short_name": "旅じたく",
+  "description": "家族と旅の希望から、個人情報を伏せたAIへの依頼文をつくります。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#2c6654",
+  "background_color": "#f6f5ef",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
